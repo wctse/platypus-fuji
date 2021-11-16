@@ -14,19 +14,18 @@ import {
 export function handleDeposit(event: Deposit): void {
   // Entities can be loaded from the store using a string ID; this ID
   // needs to be unique across all entities of the same type
-  let depositID = event.transaction.hash.toHexString().concat("-").concat(event.logIndex.toString())
+  let depositID = event.id.toHexString().concat("-").concat(event.logIndex.toString())
   let entity = Deposit.load(depositID);
 
   if (!entity) {
     entity = new Deposit(depositID);
   }
 
-  entity.sender = event.params.sender;
-  entity.token = event.params.token;
-  entity.amount = event.params.amount;
-  entity.liquidity = event.params.liquidity;
-  entity.to = event.params.to;
-  entity.timestamp = event.block.timestamp;
+  entity.sender = event.sender;
+  entity.token = event.token;
+  entity.amount = event.amount;
+  entity.liquidity = event.liquidity;
+  entity.to = event.to;
 
   entity.save();
 }
