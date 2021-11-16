@@ -1,4 +1,4 @@
-specVersion: 0.0.1
+specVersion: 0.0.2
 schema:
   file: ./schema.graphql
 dataSources:
@@ -8,46 +8,23 @@ dataSources:
     source:
       address: "0x67a313749E3e3474B0880F3053b771797A39D1F1"
       abi: Platypus
+      startBlock: 2357700
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
       language: wasm/assemblyscript
       entities:
-        - Upgraded
-        - AssetAdded
         - Deposit
-        - DevUpdated
-        - OracleUpdated
-        - OwnershipTransferred
-        - Paused
-        - PriceDeviationUpdated
         - Swap
-        - Unpaused
         - Withdraw
       abis:
         - name: Platypus
           file: ./abis/Platypus.json
       eventHandlers:
-        - event: Upgraded(indexed address)
-          handler: handleUpgraded
-        - event: AssetAdded(indexed address,indexed address)
-          handler: handleAssetAdded
         - event: Deposit(indexed address,address,uint256,uint256,indexed address)
           handler: handleDeposit
-        - event: DevUpdated(indexed address,indexed address)
-          handler: handleDevUpdated
-        - event: OracleUpdated(indexed address,indexed address)
-          handler: handleOracleUpdated
-        - event: OwnershipTransferred(indexed address,indexed address)
-          handler: handleOwnershipTransferred
-        - event: Paused(address)
-          handler: handlePaused
-        - event: PriceDeviationUpdated(uint256,uint256)
-          handler: handlePriceDeviationUpdated
         - event: Swap(indexed address,address,address,uint256,uint256,indexed address)
           handler: handleSwap
-        - event: Unpaused(address)
-          handler: handleUnpaused
         - event: Withdraw(indexed address,address,uint256,uint256,indexed address)
           handler: handleWithdraw
       file: ./src/mapping.ts

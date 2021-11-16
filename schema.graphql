@@ -1,5 +1,30 @@
-type ExampleEntity @entity {
+type Deposit @entity {
   id: ID!
-  count: BigInt!
-  implementation: Bytes! # address
+  sender: Bytes!
+  token: Bytes!
+  amount: BigInt!
+  liquidity: BigInt!
+  to: Bytes!
+  timestamp: BigInt!
+}
+
+type Swap @entity {
+	id: ID!
+	sender: Bytes!
+	fromToken: Bytes!
+	toToken: Bytes!
+	fromAmount: BigInt!
+	toAmount: BigInt!
+	to: Bytes!
+	timestamp: BigInt!
+}
+
+type Withdraw @entity {
+	id: ID!
+	sender: Bytes!
+	token: Bytes!
+	amount: BigInt!
+	liquidity: BigInt!
+	to: Bytes!
+	timestamp: BigInt!
 }
