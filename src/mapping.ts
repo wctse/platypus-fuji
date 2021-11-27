@@ -1,37 +1,38 @@
 import { BigInt } from "@graphprotocol/graph-ts"
 import {
-  Platypus,
-  Deposit,
-  Swap,
-  Withdraw
+  Platypus as platypusContract,
+  Deposit as depositContract,
+  Swap as swapContract,
+  Withdraw as withdrawContract
 } from "../generated/Platypus/Platypus"
 import {
   Deposit,
   Swap,
-  Withdraw
+  Withdraw,
 } from "../generated/schema"
 
-export function handleDeposit(event: Deposit): void {
+export function handleDeposit(event: depositContract): void {
   // Entities can be loaded from the store using a string ID; this ID
   // needs to be unique across all entities of the same type
-  let depositID = event.id.toHexString().concat("-").concat(event.logIndex.toString())
+  let depositID = event.transaction.hash.toHexString().concat("-").concat(event.logIndex.toString())
   let entity = Deposit.load(depositID);
 
   if (!entity) {
     entity = new Deposit(depositID);
   }
 
-  entity.sender = event.sender;
-  entity.token = event.token;
-  entity.amount = event.amount;
-  entity.liquidity = event.liquidity;
-  entity.to = event.to;
+  entity.sender = event.params.sender;
+  entity.token = event.params.token;
+  entity.amount = event.params.amount;
+  entity.liquidity = event.params.liquidity;
+  entity.to = event.params.to;
+  entity.timestamp = event.block.timestamp;
 
   entity.save();
 }
 
 
-export function handleSwap(event: Swap): void {
+export function handleSwap(event: swapContract): void {
   let swapID = event.transaction.hash.toHexString().concat("-").concat(event.logIndex.toString())
   let entity = Swap.load(swapID);
 
@@ -51,9 +52,9 @@ export function handleSwap(event: Swap): void {
 }
 
 
-export function handleWithdraw(event: Withdraw): void {
+export function handleWithdraw(event: withdrawContract): void {
   let withdrawID = event.transaction.hash.toHexString().concat("-").concat(event.logIndex.toString())
-  let entity = Swap.load(withdrawID);
+  let entity = Withdraw.load(withdrawID);
 
   if (!entity) {
     entity = new Withdraw(withdrawID);
